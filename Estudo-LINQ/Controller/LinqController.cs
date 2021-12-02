@@ -65,6 +65,21 @@ namespace API_REST.Controller
             return avg;
         }
 
+        [HttpGet, Route("/api/linqavg/{ClientId}")]
+        public dynamic GetAvgById(int ClientId)
+        {
+            var avg = from x in _context.Compra
+                      where x.ClientId == ClientId
+                      group x by x.ClientId
+                      into g
+                      select new
+                      {
+                          Avg = g.Average(x => x.Total)
+                      };
+
+            return avg;
+        }
+
         [HttpGet, Route("/api/linqmax")]
         public dynamic max()
         {
